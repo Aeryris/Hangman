@@ -39,6 +39,7 @@ import sys
 def print_hangman_line(guessed, guessed_old=''):
     # for i in range(0, number):
     #     print("_", end=" ")
+    print("\r\n")
 
     for character in guessed:
         print(character, end=' ')
@@ -122,7 +123,7 @@ while did_guess is False:
 
     log_guess(file_name, input_character)
 
-    print("Checking: " + input_character)
+    #print("Checking: " + input_character)
 
     if already_guessed(input_character, guessed_characters):
         print("Letter already guessed")
