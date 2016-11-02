@@ -39,6 +39,7 @@ import os
 def print_hangman_line(number, guessed=''):
     for i in range(0, number):
         print("_", end=" ")
+    print("\r\n")
     return
 
 
@@ -56,8 +57,13 @@ def refresh_screen(number_of_characters):
     return
 
 
+def read_character():
+    return input("Please enter character: ")
+
+
 # Print congratulations message
 def congratulations():
+    print()
     print("Congratulations!!!")
     return
 
@@ -74,16 +80,26 @@ number_of_characters = len(random_word)
 # This is a flag that will be marked
 did_guess = False
 
+# Guessed characters list
+guessed_characters = []
+
 # Loop, repeat code until user guessed the word
-while (did_guess == False):
+while did_guess is False:
 
     # Clear screen window and print content again.
     refresh_screen(number_of_characters)
 
     print_hangman_line(number_of_characters)
 
-    # Stop the loop, user guessed the word
-    did_guess = True
+    input_character = read_character()
 
-    if did_guess == True:
-        congratulations()
+    print("Checking: " + input_character)
+
+
+    if len(guessed_characters) == number_of_characters:
+        # Stop the loop, user guessed the word
+        did_guess = True
+
+        if did_guess is True:
+            congratulations()
+
