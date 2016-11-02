@@ -65,6 +65,9 @@ def refresh_screen(number_of_characters):
     print("Word has " + str(number_of_characters) + " letters")
     return
 
+def log_guess(file, text):
+    with open(file, "a") as log:
+        log.write(text + ", ")
 
 def read_character():
     return input("Please enter character: ")
@@ -103,6 +106,10 @@ max_failed_guesses = 4
 # Number of failed guesses
 guesses_failed = 0
 
+# Bonus
+# File name
+file_name = 'hangman.txt'
+
 # Clear screen window and print content again.
 refresh_screen(number_of_characters)
 
@@ -112,6 +119,8 @@ while did_guess is False:
     print_hangman_line(guessed_characters)
 
     input_character = read_character()
+
+    log_guess(file_name, input_character)
 
     print("Checking: " + input_character)
 
