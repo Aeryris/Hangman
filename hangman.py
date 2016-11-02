@@ -8,68 +8,58 @@
 # It's like studying, You have read the book, got some new knowledge but you didn't have a chance to use it yet.
 import random
 
-# Import additional library called os
-# It allows the program to manipulate the system.
-# In this program it is used to clear the screen from anything that we print
-# For instance if there is print("Hello")
-# it will print to the screen  Hello
-# then if we use os.system('cls')
-# That Hello text will be removed from the screen
-import os
 import sys
 
 # Prints number of guessed and not guessed letters to the screen
 # Not yet guessed letters are represented by an underscore _
-# This function has two parameters number and guessed
-# Number will represent the number of characters in the word
-# Guessed will contain list of guessed words
-# As You can see guessed is written as guessed = ''
-# What this means it that this parameter is optional.
-# So we have two options of how we can use this function
-# We can call/invoke/run/execute (they all mean the same) the function in the following way
-# print_hangman_line(10) - as You can see we only provided one parameter 10,
-#       that means second parameter which is 'guessed' will automatically be set to '' (empty value)
-# or
-# print_hangman_line(10, guessed=['a', 'b', 'c']) -
-#       In here we have provided 2 parameters, 10 and guessed=['a', 'b', 'c']
 #
-# Lets assume that the function would look like this
-#   print_hangman_line(number, guessed='abc'):
-# This means that default value for parameter guessed is abc
-def print_hangman_line(guessed, guessed_old=''):
-    # for i in range(0, number):
-    #     print("_", end=" ")
+# This function will loop (go through) guessed characters list and print them.
+def print_hangman_line(guessed):
+    # Print clear line
     print("\r\n")
+
+    # This is foreach loop
+    # Basically assume 'guessed' is a list (array) and it looks like guessed=[a, b, c]
+    # Foreach will go through each value and assign it to 'character'
+    # So when the code below runs its something like that:
+    # take first value from guessed list
+    # assign that value to character variable and print it
 
     for character in guessed:
         print(character, end=' ')
 
+    #Print clear line
     print("\r\n")
     return
 
 
 # Check if letter is in the selected word
 def check_letter(letter, word):
+    # There is built in function called find
+    # Word variable is any word we specify "teddy", "smerf", python automatically recogizes it and
+    # knows that you can call find function on it
     return word.find(letter)
 
+# Checks whether a letter was already guessed
 def already_guessed(letter, guessed):
+    # This checks if letter is already in guessed list
     if letter in guessed:
         return True
     else:
         return False
 
 # Refresh the console window
-def refresh_screen(number_of_characters):
-    # Clear console window - http://stackoverflow.com/a/2084628
-    os.system('cls' if os.name == 'nt' else 'clear')
+def intro_screen(number_of_characters):
     print("    Hangman!")
     print("Word has " + str(number_of_characters) + " letters")
     return
 
+# This opens a file with mode a (append) and writes text to it
 def log_guess(file, text):
     with open(file, "a") as log:
         log.write(text + ", ")
 
+# Read users letters
 def read_character():
     return input("Please enter character: ")
 
@@ -111,25 +101,34 @@ guesses_failed = 0
 # File name
 file_name = 'hangman.txt'
 
-# Clear screen window and print content again.
-refresh_screen(number_of_characters)
+# Intro game text
+intro_screen(number_of_characters)
 
 # Loop, repeat code until user guessed the word
 while did_guess is False:
 
+    #Print underscores or any guessed letters
     print_hangman_line(guessed_characters)
 
+    # Ask user for the letter input
     input_character = read_character()
 
+    # Write users guess to the file
     log_guess(file_name, input_character)
 
-    #print("Checking: " + input_character)
 
+    # Check if letter was already guessed
     if already_guessed(input_character, guessed_characters):
         print("Letter already guessed")
-    else:
+    else: #otherwise
+        # Check if letter is in the word
         find_character = check_letter(input_character, random_word)
-        if find_character != -1:
+        if find_character != -1: # result is not -1, means that letter was found in the word
+            # Put the guessed character in the the correct position in the list
+            # for instance assume we have word cat
+            # to the user its displayed _ _ _
+            # then user guessed a which is a position 2
+            # then script replaces underscore _ as position 2 with the guessed letter
             guessed_characters[find_character] = input_character
             number_guessed += 1
         else:
