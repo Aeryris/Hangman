@@ -3,14 +3,21 @@
 import random
 import os
 
-def print_hangman_line(number, guessed = ''):
+
+# Prints number of guessed and not guessed letters to the screen
+# Not yet guessed letters are represented by an underscore _
+def print_hangman_line(number, guessed=''):
     for i in range(0, number):
         print("_", end=" ")
     return
 
+
+# Check if letter is in the selected word
 def check_letter(letter, word):
     return
 
+
+# Refresh the console window
 def refresh_screen(number_of_characters):
     # Clear console window - http://stackoverflow.com/a/2084628
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -18,6 +25,8 @@ def refresh_screen(number_of_characters):
     print("Word has " + str(number_of_characters) + " letters")
     return
 
+
+# Print congratulations message
 def congratulations():
     return
 
@@ -35,7 +44,7 @@ number_of_characters = len(random_word)
 did_guess = False
 
 # Loop, repeat code until user guessed the word
-while(did_guess == False):
+while (did_guess == False):
 
     # Clear screen window and print content again.
     refresh_screen(number_of_characters)
@@ -47,14 +56,3 @@ while(did_guess == False):
 
     if did_guess == True:
         congratulations()
-
-
-
-
-
-
-
-
-
-
-
