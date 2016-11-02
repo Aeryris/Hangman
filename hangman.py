@@ -16,7 +16,7 @@ import random
 # then if we use os.system('cls')
 # That Hello text will be removed from the screen
 import os
-
+import sys
 
 # Prints number of guessed and not guessed letters to the screen
 # Not yet guessed letters are represented by an underscore _
@@ -36,16 +36,20 @@ import os
 # Lets assume that the function would look like this
 #   print_hangman_line(number, guessed='abc'):
 # This means that default value for parameter guessed is abc
-def print_hangman_line(number, guessed=''):
-    for i in range(0, number):
-        print("_", end=" ")
+def print_hangman_line(guessed, guessed_old=''):
+    # for i in range(0, number):
+    #     print("_", end=" ")
+
+    for character in guessed:
+        print(character, end=' ')
+
     print("\r\n")
     return
 
 
 # Check if letter is in the selected word
 def check_letter(letter, word):
-    return
+    return word.find(letter)
 
 
 # Refresh the console window
@@ -82,24 +86,45 @@ did_guess = False
 
 # Guessed characters list
 guessed_characters = []
+for i in range(0, number_of_characters):
+    guessed_characters.append('_')
+
+# Number of guessed characters
+number_guessed = 0
+
+# Maximum number of failed guesses
+max_failed_guesses = 4
+
+# Number of failed guesses
+guesses_failed = 0
+
+# Clear screen window and print content again.
+refresh_screen(number_of_characters)
 
 # Loop, repeat code until user guessed the word
 while did_guess is False:
 
-    # Clear screen window and print content again.
-    refresh_screen(number_of_characters)
-
-    print_hangman_line(number_of_characters)
+    print_hangman_line(guessed_characters)
 
     input_character = read_character()
 
     print("Checking: " + input_character)
 
+    find_character = check_letter(input_character, random_word)
+    if find_character != -1:
+        guessed_characters[find_character] = input_character
+        number_guessed += 1
+    else:
+        guesses_failed += 1
+        print("Nope, try again")
 
-    if len(guessed_characters) == number_of_characters:
+    if guesses_failed == max_failed_guesses:
+        print("You died! Sorry")
+        sys.exit(0)
+
+    if number_guessed == number_of_characters:
         # Stop the loop, user guessed the word
         did_guess = True
-
         if did_guess is True:
             congratulations()
 
