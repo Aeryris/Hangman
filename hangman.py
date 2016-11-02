@@ -51,6 +51,11 @@ def print_hangman_line(guessed, guessed_old=''):
 def check_letter(letter, word):
     return word.find(letter)
 
+def already_guessed(letter, guessed):
+    if letter in guessed:
+        return True
+    else:
+        return False
 
 # Refresh the console window
 def refresh_screen(number_of_characters):
@@ -110,17 +115,21 @@ while did_guess is False:
 
     print("Checking: " + input_character)
 
-    find_character = check_letter(input_character, random_word)
-    if find_character != -1:
-        guessed_characters[find_character] = input_character
-        number_guessed += 1
+    if already_guessed(input_character, guessed_characters):
+        print("Letter already guessed")
     else:
-        guesses_failed += 1
-        print("Nope, try again")
+        find_character = check_letter(input_character, random_word)
+        if find_character != -1:
+            guessed_characters[find_character] = input_character
+            number_guessed += 1
+        else:
+            guesses_failed += 1
+            print("Nope, try again")
 
-    if guesses_failed == max_failed_guesses:
-        print("You died! Sorry")
-        sys.exit(0)
+        if guesses_failed == max_failed_guesses:
+            print("You died! Sorry")
+            sys.exit(0)
+
 
     if number_guessed == number_of_characters:
         # Stop the loop, user guessed the word
